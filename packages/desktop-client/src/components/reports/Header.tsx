@@ -26,6 +26,7 @@ import {
 import { AppliedFilters } from '@desktop-client/components/filters/AppliedFilters';
 import { FilterButton } from '@desktop-client/components/filters/FiltersMenu';
 import { useLocale } from '@desktop-client/hooks/useLocale';
+import { MonthRangePicker } from './MonthRangePicker';
 
 type HeaderProps = {
   start: TimeFrame['start'];
@@ -46,7 +47,7 @@ type HeaderProps = {
   // no separate category filter; use main filters instead
   filterExclude?: string[];
 } & (
-  | {
+    | {
       filters: RuleConditionEntity[];
       onApply: (conditions: RuleConditionEntity) => void;
       onUpdateFilter: ComponentProps<typeof AppliedFilters>['onUpdate'];
@@ -56,7 +57,7 @@ type HeaderProps = {
         typeof AppliedFilters
       >['onConditionsOpChange'];
     }
-  | {
+    | {
       filters?: never;
       onApply?: never;
       onUpdateFilter?: never;
@@ -64,7 +65,7 @@ type HeaderProps = {
       conditionsOp?: never;
       onConditionsOpChange?: never;
     }
-);
+  );
 
 export function Header({
   start,
@@ -140,6 +141,7 @@ export function Header({
               </Button>
             )}
 
+            {/* TODO: Remove old Select dropdowns once MonthRangePicker is complete
             <SpaceBetween gap={5}>
               <Select
                 onChange={newValue =>
@@ -158,6 +160,7 @@ export function Header({
               />
               <View>{t('to')}</View>
               <Select
+
                 onChange={newValue =>
                   onChangeDates(
                     ...validateEnd(
@@ -173,8 +176,12 @@ export function Header({
                 style={{ marginRight: 10 }}
               />
             </SpaceBetween>
+            */}
+
+
           </SpaceBetween>
 
+          {/* TODO: Remove old quick-select buttons once MonthRangePicker presets are wired up
           <SpaceBetween gap={3}>
             {show1Month && (
               <Button
@@ -291,7 +298,18 @@ export function Header({
             >
               <Trans>All time</Trans>
             </Button>
+          </SpaceBetween>
+          */}
 
+          <SpaceBetween gap={3}>
+
+            <MonthRangePicker
+              start={start}
+              end={end}
+              onChangeDates={(newStart, newEnd) =>
+                onChangeDates(newStart, newEnd, 'static')
+              }
+            />
             {filters && (
               <FilterButton
                 compact={isNarrowWidth}
